@@ -1,7 +1,7 @@
-import externals from 'rollup-plugin-node-externals';
-import json from '@rollup/plugin-json';
-import resolve from '@rollup/plugin-node-resolve';
-import { sizeSnapshot } from 'rollup-plugin-size-snapshot';
+import externals from "rollup-plugin-node-externals";
+import json from "@rollup/plugin-json";
+import resolve from "@rollup/plugin-node-resolve";
+import { sizeSnapshot } from "rollup-plugin-size-snapshot";
 
 const plugins = [
   resolve({ preferBuiltins: true, modulesOnly: true }),
@@ -10,19 +10,25 @@ const plugins = [
   sizeSnapshot(),
 ];
 
-const output = {
-  dir: 'dist',
-  format: 'cjs',
-  paths: { '@reuters-graphics/sportlich': './index.js' },
-};
+const getOutput = (path) => ({
+  dir: "dist",
+  format: "cjs",
+  paths: { "@reuters-graphics/sportlich": path },
+});
 
-export default [{
-  input: 'src/index.js',
-  output,
-  plugins,
-}, {
-  input: 'src/cli.js',
-  output: { ...output, ...{ banner: '#!/usr/bin/env node' } },
-  plugins,
-  external: ['@reuters-graphics/sportlich'],
-}];
+export default [
+  {
+    input: "src/sports/soccer.js",
+    output: getOutput("./soccer.js"),
+    plugins,
+  },
+  {
+    input: "src/cli.js",
+    output: {
+      ...getOutput("./index.js"),
+      ...{ banner: "#!/usr/bin/env node" },
+    },
+    plugins,
+    external: ["@reuters-graphics/sportlich"],
+  },
+];

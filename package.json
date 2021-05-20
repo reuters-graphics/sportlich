@@ -6,7 +6,7 @@
     "sportlich": "dist/cli.js"
   },
   "repository": "https://github.com/reuters-graphics/sportlich",
-  "author": "Jon McClure <jon.r.mcclure@gmail.com>",
+  "author": "Dylan Freedman <freedmand@gmail.com>",
   "license": "MIT",
   "private": false,
   "keywords": [],
@@ -32,6 +32,9 @@
     "rollup-plugin-size-snapshot": "^0.12.0"
   },
   "dependencies": {
+    "axios": "^0.21.1",
+    "crypto": "^1.0.1",
+    "qs": "^6.10.1",
     "sade": "^1.7.4"
   }
 }

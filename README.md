@@ -13,17 +13,17 @@ yarn add @reuters-graphics/sportlich
 ### CLI
 
 ```bash
-sportlich greet Jon
+sportlich greet Dylan
 ```
 
 ### Module
 
 ```javascript
-import Sportlich from '@reuters-graphics/sportlich';
+import Sportlich from "@reuters-graphics/sportlich";
 
 const sportlich = new Sportlich();
 
-sportlich.greet('Jon');
+sportlich.greet("Dylan");
 ```
 
 ## Testing
