@@ -17,6 +17,7 @@
   "scripts": {
     "prepublishOnly": "yarn test",
     "build": "rollup --config rollup.config.js",
+    "watch": "rollup --config rollup.config.js -w",
     "test": "yarn build && mocha"
   },
   "devDependencies": {

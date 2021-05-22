@@ -1,6 +1,6 @@
 import pkg from "../package.json";
 import sade from "sade";
-import soccer from "./clis/soccer";
+import sports from "./clis/sports";
 require("dotenv").config();
 
 const prog = sade("sportlich", false);
@@ -31,12 +31,10 @@ function subcommand(command, name, opts) {
   }
 }
 
-const SUBCOMMANDS = [["soccer", "List soccer commands", soccer]];
-
-SUBCOMMANDS.forEach(([name, description, action]) => {
+sports.forEach(([name, action]) => {
   prog
     .command(name)
-    .describe(description)
+    .describe(`Run ${name} commands`)
     .action((opts) => {
       subcommand(action, name, opts);
     });
@@ -46,11 +44,11 @@ SUBCOMMANDS.forEach(([name, description, action]) => {
 const oldParse = prog.parse;
 prog.parse = function (...args) {
   // See if matches a subcommand
-  if (args[0].length > 3 && SUBCOMMANDS.map((x) => x[0]).includes(args[0][2])) {
+  if (args[0].length > 3 && sports.map((x) => x[0]).includes(args[0][2])) {
     // Could make this a tad cleaner
     // We just run the subcommand with its arguments, which solves wrong help text
-    const matchingSubcommand = SUBCOMMANDS.filter((x) => x[0] == args[0][2])[0];
-    return matchingSubcommand[2](wrap).parse([
+    const matchingSubcommand = sports.filter((x) => x[0] == args[0][2])[0];
+    return matchingSubcommand[1](wrap).parse([
       args[0][0],
       `${args[0][1]} ${args[0][2]}`,
       args[0][3],
