@@ -54,8 +54,9 @@ All CLI commands generally interface with the Opta API, which returns a JSON res
 | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `-s, --skeleton` | Show only one value for each array in the response JSON. This is useful for quickly gleaming the overall structure without getting a jumble of thousands of rows.                                      |
 | `-r, --raw`      | Show the full prettified JSON value (as returned by JSON.stringify). Without this option, the JSON is printed using Node's default formatter, which can truncate data or apply undesired highlighting. |
+| `-f, --filter`   | Filter the JSON response using a JMESPath filter. Refer to [jmespath.org](https://jmespath.org/) for the language specification and examples.                                                          |
 | `-c, --cache`    | Cache API calls in a static file. Future calls to the same exact endpoints/params will use the cached result without relying on the network/API (unless the `--nocache` parameter is set; see below).  |
-| `-n, --nocache`  | Do not utilize the API cache. (In general, the cache can be cleared by running `sportlich clean`)                                                                                                      |
+| `-n, --nocache`  | Do not utilize the API cache. (In general, the cache can be cleared by running `sportlich clean`.)                                                                                                     |
 
 ### Examples
 

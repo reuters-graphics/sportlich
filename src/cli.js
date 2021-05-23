@@ -15,6 +15,10 @@ const wrap = (x) =>
       "-r, --raw",
       "Show full json value without Node's default formatting"
     )
+    .option(
+      "-f, --filter",
+      "Filter using a JMESPath filter. See jmespath.org for the language spec"
+    )
     .option("-c, --cache", "Cache API calls, reuse cached calls")
     .option("-n, --nocache", "Don't cache API calls");
 

@@ -1,12 +1,14 @@
 import { get } from "../auth";
 import { skeleton } from "../util";
 import { cache } from "../cache";
+import jmespath from "jmespath";
 
 class Sportlich {
   constructor(opts) {
     // Parse common options
     this.skeleton = opts.skeleton;
     this.raw = opts.raw;
+    this.filter = opts.filter;
     this.cache = opts.cache;
     this.nocache = opts.nocache;
 
@@ -18,6 +20,9 @@ class Sportlich {
 
   log(json) {
     // JSON logging function that takes into account options
+    if (this.filter) {
+      json = jmespath.search(json, this.filter);
+    }
     if (this.skeleton) {
       json = skeleton(json);
     }
