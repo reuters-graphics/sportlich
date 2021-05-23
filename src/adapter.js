@@ -18,8 +18,10 @@ export function commandAdapter(commandName, sportClass, commands) {
           prog
             .command(command)
             .describe(description)
-            .action((opts) => {
-              const instance = new sportClass(opts);
+            .action((opts, extraOpts) => {
+              const instance = new sportClass(
+                extraOpts == null ? opts : extraOpts
+              );
               action(instance).bind(instance)(opts);
             })
         );
