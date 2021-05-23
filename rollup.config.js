@@ -18,8 +18,13 @@ const getOutput = (path) => ({
 
 export default [
   {
-    input: "src/sports/soccer.js",
+    input: "src/apis/soccer.js",
     output: getOutput("./soccer.js"),
+    plugins,
+  },
+  {
+    input: "src/apis/baseball.js",
+    output: getOutput("./baseball.js"),
     plugins,
   },
   {

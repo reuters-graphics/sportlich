@@ -1,6 +1,7 @@
 import pkg from "../package.json";
 import sade from "sade";
 import sports from "./clis/sports";
+import { cache } from "./cache";
 require("dotenv").config();
 
 const prog = sade("sportlich", false);
@@ -13,7 +14,9 @@ const wrap = (x) =>
     .option(
       "-r, --raw",
       "Show full json value without Node's default formatting"
-    );
+    )
+    .option("-c, --cache", "Cache API calls, reuse cached calls")
+    .option("-n, --nocache", "Don't cache API calls");
 
 function subcommand(command, name, opts) {
   if (opts._.length == 0) {
@@ -39,6 +42,14 @@ sports.forEach(([name, action]) => {
       subcommand(action, name, opts);
     });
 });
+
+// Other commands
+prog
+  .command("clean")
+  .describe("Clear the API cache")
+  .action(() => {
+    cache.clearCache();
+  });
 
 // Wrap subcommands
 const oldParse = prog.parse;
