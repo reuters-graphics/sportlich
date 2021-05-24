@@ -68,6 +68,12 @@ To get a list of all tournaments
 sportlich soccer tournamentcalendar
 ```
 
+To filter and only show US tournaments
+
+```
+sportlich soccer tournamentcalendar -c -f 'competition[?contains(`["USA"]`, countryCode)]'
+```
+
 To get the schedule for a particular tournament and only show the first result of each array in the response JSON:
 
 ```
