@@ -80,9 +80,57 @@ To get the schedule for a particular tournament and only show the first result o
 sportlich soccer tournamentschedule 3pgp7unogn1qfsg93jmi7x10q -s
 ```
 
+To store a particular match within a tournament:
+
+```
+MATCH=$(sportlich soccer tournamentschedule 3pgp7unogn1qfsg93jmi7x10q -f "matchDate[0].match[0].id")
+```
+
+To grab more information about that match (now that it's in an environment variable):
+
+```
+sportlich soccer match $MATCH
+```
+
 ### Module
 
 [TODO: Make module work]
+
+## Adding new API routes
+
+You need to modify code in 2 places:
+
+### `src/apis/{sportname}.js`
+
+Links in the actual code to pull from Opta's API
+
+For instance, to add a soccer route for `/soccerdata/match/{outletAuthKey}`, I would edit `src/apis/soccer.js` and add an async class method to the main `Soccer` class (with a parameter `fixtureUuid` taken from reading the "User Guide" in Opta's documentation):
+
+```javascript
+  async match(fixtureUuid) {
+    return await this.getUrl(
+      `/soccerdata/match/<auth>/${fixtureUuid}/`
+    );
+  }
+```
+
+Here, `<auth>` gets replaced with the `outletAuthKey` automatically.
+
+### `src/clis/{sportname}.js`
+
+Hooks in CLI support for the command
+
+Using our `match` route example from above, we would edit `src/cli/soccer.js` and add an element to the main exported array that looks like this:
+
+```javascript
+  [
+    "match <fixtureUuid>",
+    "Get a fixture or fixture list with match details, such as date, start time, contestants, competition, season, score, result and lineups.",
+    (soccer) => soccer.match,
+  ],
+```
+
+The first element of this subarray is the actual command as recognized by the [`sade`](https://github.com/lukeed/sade) package we use to operate the CLI (notice it has a parameter `<fixtureUuid>` which will get passed to the API). The second element is a description of what the command does (I just copy this word-for-word from Opta's user guide about the particular command in the subtitle). The third element takes a soccer class instance as parameter and returns the function that will run the API code (with no arguments since this is an abstraction).
 
 ## Testing
 

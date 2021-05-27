@@ -12,4 +12,9 @@ export default commandAdapter("soccer", Soccer, [
     "Get schedule information for a tournament, including individual matches split by day, including the coverage level for a match.",
     (soccer) => soccer.tournamentSchedule,
   ],
+  [
+    "match <fixtureUuid>",
+    "Get a fixture or fixture list with match details, such as date, start time, contestants, competition, season, score, result and lineups.",
+    (soccer) => soccer.match,
+  ],
 ]);

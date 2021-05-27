@@ -10,4 +10,8 @@ export class Soccer extends Sportlich {
       `/soccerdata/tournamentschedule/<auth>/${tournamentCalendarUuid}/`
     );
   }
+
+  async match(fixtureUuid) {
+    return await this.getUrl(`/soccerdata/match/<auth>/${fixtureUuid}/`);
+  }
 }

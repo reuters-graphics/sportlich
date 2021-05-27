@@ -7,7 +7,7 @@ export function skeleton(json) {
         `... (${json.length - 1} row${json.length == 2 ? "" : "s"} omitted)`,
       ];
     } else {
-      return skeleton;
+      return [skeleton(json[0])];
     }
   }
   if (json instanceof Object) {
