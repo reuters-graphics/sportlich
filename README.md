@@ -64,37 +64,59 @@ Some soccer-specific examples (since that's currently the most fleshed out API).
 
 To get a list of all tournaments
 
-```
+```bash
 sportlich soccer tournamentcalendar
 ```
 
 To filter and only show US tournaments
 
-```
+```bash
 sportlich soccer tournamentcalendar -c -f 'competition[?contains(`["USA"]`, countryCode)]'
 ```
 
 To get the schedule for a particular tournament and only show the first result of each array in the response JSON:
 
-```
+```bash
 sportlich soccer tournamentschedule 3pgp7unogn1qfsg93jmi7x10q -s
 ```
 
 To store a particular match within a tournament:
 
-```
+```bash
 MATCH=$(sportlich soccer tournamentschedule 3pgp7unogn1qfsg93jmi7x10q -f "matchDate[0].match[0].id")
 ```
 
 To grab more information about that match (now that it's in an environment variable):
 
-```
+```bash
 sportlich soccer match $MATCH
+```
+
+Get the most recent match from the EPL
+
+```bash
+# Get the EPL
+TOURNAMENT=$(sportlich soccer tournamentcalendar -f 'competition[?competitionCode == `"EPL"`] | [0].tournamentCalendar[0].id')
+
+# Get the most recent match in the schedule
+MATCH=$(sportlich soccer tournamentschedule $TOURNAMENT -s -f "sort_by(matchDate, &date)[::-1] | [0] | sort_by(match, &date)[::-1] | [0].id")
+```
+
+Useful tournament constants
+
+```bash
+# Tournaments
+EUROS2016=8qik857k4nxbzxbdsjjsiouz9
+EUROS2020=cnqwzc1jx33qoyfgyoorl0yqx
+
+WORLDCUP2014=2eqo5ktqlv7pjfd55819ifu74
+WORLDCUP2018=bkvkz42omnou98nkjgb3dh0b9
+WORLDCUP2022=2a8elwzsufmguwymxbshcx756
 ```
 
 ### Module
 
-[TODO: Make module work]
+[TODO: module docs]
 
 ## Adding new API routes
 
@@ -131,11 +153,3 @@ Using our `match` route example from above, we would edit `src/cli/soccer.js` an
 ```
 
 The first element of this subarray is the actual command as recognized by the [`sade`](https://github.com/lukeed/sade) package we use to operate the CLI (notice it has a parameter `<fixtureUuid>` which will get passed to the API). The second element is a description of what the command does (I just copy this word-for-word from Opta's user guide about the particular command in the subtitle). The third element takes a soccer class instance as parameter and returns the function that will run the API code (with no arguments since this is an abstraction).
-
-## Testing
-
-```
-yarn test
-```
-
-[TODO: tests]

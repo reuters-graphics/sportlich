@@ -11,6 +11,7 @@ class Sportlich {
     this.filter = opts.filter;
     this.cache = opts.cache;
     this.nocache = opts.nocache;
+    this.cmdline = opts.cmdline;
 
     if (this.cache && this.nocache) {
       // Prevent conflicting options
@@ -32,11 +33,29 @@ class Sportlich {
     return console.log(json);
   }
 
-  async getUrl(path, params = "_rt=b&_fmt=json") {
-    const url = `https://api.performfeeds.com${path.replace(
-      "<auth>",
-      process.env.OUTLET_AUTH
-    )}?${params}`;
+  handleResponse(json) {
+    if (this.cmdline) {
+      this.log(json);
+    } else {
+      return json;
+    }
+  }
+
+  async getUrl(
+    path,
+    params = [
+      ["_rt", "b"],
+      ["_fmt", "json"],
+    ]
+  ) {
+    const urlObj = new URL(
+      `https://api.performfeeds.com${path.replace(
+        "<auth>",
+        process.env.OUTLET_AUTH
+      )}`
+    );
+    params.forEach(([key, value]) => urlObj.searchParams.set(key, value));
+    const url = urlObj.toString();
 
     // Get response
     let response = null;
@@ -57,7 +76,7 @@ class Sportlich {
       cache.setUrl(url, response);
     }
 
-    return this.log(response);
+    return this.handleResponse(response);
   }
 }
 

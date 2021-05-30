@@ -18,11 +18,11 @@ export function commandAdapter(commandName, sportClass, commands) {
           prog
             .command(command)
             .describe(description)
-            .action((opts, extraOpts) => {
-              const instance = new sportClass(
-                extraOpts == null ? opts : extraOpts
-              );
-              action(instance).bind(instance)(opts);
+            .action((...args) => {
+              const opts = args.length == 0 ? {} : args[args.length - 1];
+              opts.cmdline = true; // enable logging
+              const instance = new sportClass(opts);
+              action(instance).bind(instance)(...args.slice(0, -1));
             })
         );
       });
