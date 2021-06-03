@@ -19,6 +19,10 @@ const wrap = (x) =>
       "-f, --filter",
       "Filter using a JMESPath filter. See jmespath.org for the language spec"
     )
+    .option(
+      "-l, --locale",
+      "Use the specified locale. See https://docs.performgroup.com/docs/data/reference/opta-sdapi-global-parameters.htm#lcl for options."
+    )
     .option("-c, --cache", "Cache API calls, reuse cached calls")
     .option("-n, --nocache", "Don't cache API calls");
 

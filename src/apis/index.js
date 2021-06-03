@@ -6,7 +6,7 @@ import jmespath from "jmespath";
 const MULTIPLE_BATCH = 20; // Opta limits multiple to 20-per-request
 
 class Sportlich {
-  constructor(opts) {
+  constructor(opts = {}) {
     // Parse common options
     this.skeleton = opts.skeleton;
     this.raw = opts.raw;
@@ -14,6 +14,7 @@ class Sportlich {
     this.cache = opts.cache;
     this.nocache = opts.nocache;
     this.cmdline = opts.cmdline;
+    this.locale = opts.locale;
     this.outletAuth = opts.optaOutletAuth || process.env.OUTLET_AUTH;
     this.secretKey = opts.optaSecretKey || process.env.SECRET_KEY;
 
@@ -56,6 +57,10 @@ class Sportlich {
     const urlObj = new URL(
       `https://api.performfeeds.com${path.replace("<auth>", this.outletAuth)}`
     );
+    // Add in locale param if set
+    if (this.locale != null) {
+      urlObj.searchParams.set("_lcl", this.locale);
+    }
     params.forEach(([key, value]) => urlObj.searchParams.set(key, value));
     const url = urlObj.toString();
 
