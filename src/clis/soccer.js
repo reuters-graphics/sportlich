@@ -23,9 +23,24 @@ export default commandAdapter("soccer", Soccer, [
     (soccer) => soccer.match,
   ],
   [
+    "matchtmcl <tournamentCalendarUuid>",
+    "Get match details with live data for a tournament calendar (with live data included).",
+    (soccer) => soccer.matchTournamentCalendar,
+  ],
+  [
+    "matchmultiple <fixtureUuids>",
+    "Get a fixture or fixture list with match details, such as date, start time, contestants, competition, season, score, result and lineups. (uuids separated by commas)",
+    (soccer) => soccer.matchMultiple,
+  ],
+  [
     "matchstats <fixtureUuid>",
     "Get detailed match statistics for teams and each individual player, including passes, shots, crosses, tackles and more.",
     (soccer) => soccer.matchStats,
+  ],
+  [
+    "matchstatsmultiple <fixtureUuids>",
+    "Get detailed match statistics for teams and each individual player, including passes, shots, crosses, tackles and more. (uuids separated by commas)",
+    (soccer) => soccer.matchStatsMultiple,
   ],
   [
     "commentary <fixtureUuid>",

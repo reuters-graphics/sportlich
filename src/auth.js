@@ -3,9 +3,7 @@ import crypto from "crypto";
 import qs from "qs";
 
 // An authorized get function
-export async function get(path) {
-  const outletAuth = process.env.OUTLET_AUTH;
-  const secretKey = process.env.SECRET_KEY;
+export async function get(path, outletAuth, secretKey) {
   const timestamp = Date.now();
   const API_Root = "https://api.performfeeds.com";
   const secret = outletAuth + timestamp + secretKey;

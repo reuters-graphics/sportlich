@@ -2,11 +2,15 @@ import Sportlich from ".";
 
 export class Soccer extends Sportlich {
   async tournamentCalendar() {
-    return await this.getUrl("/soccerdata/tournamentcalendar/<auth>");
+    return await this.getUrl(
+      "/soccerdata/tournamentcalendar/<auth>/?stages=yes"
+    );
   }
 
   async tournamentCalendarType(type) {
-    return await this.getUrl(`/soccerdata/tournamentcalendar/<auth>/${type}`);
+    return await this.getUrl(
+      `/soccerdata/tournamentcalendar/<auth>/${type}/?stages=yes`
+    );
   }
 
   async tournamentSchedule(tournamentCalendarUuid) {
@@ -19,8 +23,30 @@ export class Soccer extends Sportlich {
     return await this.getUrl(`/soccerdata/match/<auth>/${fixtureUuid}/`);
   }
 
+  async matchTournamentCalendar(tournamentCalendarUuid) {
+    return await this.getUrl(
+      `/soccerdata/match/<auth>/?tmcl=${tournamentCalendarUuid}&live=yes&_pgSz=1000`
+    );
+  }
+
+  async matchMultiple(fixtureUuids) {
+    return await this.handleMultiple(
+      fixtureUuids,
+      (fx) => `/soccerdata/match/<auth>/?fx=${fx}`,
+      "match"
+    );
+  }
+
   async matchStats(fixtureUuid) {
     return await this.getUrl(`/soccerdata/matchstats/<auth>/${fixtureUuid}/`);
+  }
+
+  async matchStatsMultiple(fixtureUuids) {
+    return await this.handleMultiple(
+      fixtureUuids,
+      (fx) => `/soccerdata/matchstats/<auth>/?fx=${fx}&detailed=yes`,
+      "matchStats"
+    );
   }
 
   async matchEvents(fixtureUuid) {
@@ -36,7 +62,9 @@ export class Soccer extends Sportlich {
   }
 
   async commentary(fixtureUuid) {
-    return await this.getUrl(`/soccerdata/commentary/<auth>/${fixtureUuid}/`);
+    return await this.getUrl(
+      `/soccerdata/commentary/<auth>/${fixtureUuid}/?type=fallback`
+    );
   }
 
   async matchPreview(fixtureUuid) {

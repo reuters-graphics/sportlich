@@ -3,6 +3,8 @@ import { skeleton } from "../util";
 import { cache } from "../cache";
 import jmespath from "jmespath";
 
+const MULTIPLE_BATCH = 20; // Opta limits multiple to 20-per-request
+
 class Sportlich {
   constructor(opts) {
     // Parse common options
@@ -12,6 +14,8 @@ class Sportlich {
     this.cache = opts.cache;
     this.nocache = opts.nocache;
     this.cmdline = opts.cmdline;
+    this.outletAuth = opts.optaOutletAuth || process.env.OUTLET_AUTH;
+    this.secretKey = opts.optaSecretKey || process.env.SECRET_KEY;
 
     if (this.cache && this.nocache) {
       // Prevent conflicting options
@@ -43,16 +47,14 @@ class Sportlich {
 
   async getUrl(
     path,
+    handleResponse = true,
     params = [
       ["_rt", "b"],
       ["_fmt", "json"],
     ]
   ) {
     const urlObj = new URL(
-      `https://api.performfeeds.com${path.replace(
-        "<auth>",
-        process.env.OUTLET_AUTH
-      )}`
+      `https://api.performfeeds.com${path.replace("<auth>", this.outletAuth)}`
     );
     params.forEach(([key, value]) => urlObj.searchParams.set(key, value));
     const url = urlObj.toString();
@@ -68,7 +70,7 @@ class Sportlich {
     }
     if (response == null) {
       // Fetch from URL
-      response = await get(url);
+      response = await get(url, this.outletAuth, this.secretKey);
     }
 
     if (this.cache) {
@@ -76,7 +78,54 @@ class Sportlich {
       cache.setUrl(url, response);
     }
 
-    return this.handleResponse(response);
+    if (handleResponse) {
+      return this.handleResponse(response);
+    } else {
+      return response;
+    }
+  }
+
+  async handleMultiple(uuids, url, key) {
+    // Batch calls to multiple uuids by Opta routes that support it
+    const ids = uuids
+      .split(",")
+      .map((x) => x.trim())
+      .filter((x) => x.length > 0);
+    let results = {};
+
+    const ensureMultiple = (x) => {
+      // If an id string with one element is requested,
+      // Opta will return just a single response. We
+      // need to fake the data to return the multiple
+      // response format so results can be merged in.
+      // (This would only happen if 51 or 101, etc
+      // ids were passed in).
+      if (x[key] == null) {
+        return { [key]: [x] };
+      }
+      return x;
+    };
+
+    for (let i = 0; i < ids.length; i += MULTIPLE_BATCH) {
+      // Batch calls
+      const subIds = ids.slice(i, i + MULTIPLE_BATCH).join(",");
+      if (results[key] == null) {
+        // Set the results, since no data is in yet
+        // console.log("URL", url(subIds));
+        results = ensureMultiple(await this.getUrl(url(subIds), false));
+      } else {
+        // Merge the results in under the appropriate key
+        // console.log("URL merge", url(subIds));
+        const subResults = ensureMultiple(
+          await this.getUrl(url(subIds), false)
+        );
+        results = {
+          ...results,
+          [key]: results[key].concat(subResults[key]),
+        };
+      }
+    }
+    return this.handleResponse(results);
   }
 }
 
