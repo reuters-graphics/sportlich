@@ -147,7 +147,7 @@ Once the instance of the desired sports class has been initialized, we can call 
 const matches = await soccer.matchTournamentCalendar(TOURNAMENT_ID);
 ```
 
-The reference for the API methods available can be found in `src/apis/<sportsname>.js`. The equivalent CLI methods found in `src/clis/<sportsname>.js` may have additional useful documentation.
+The reference for the API methods available can be found in `src/apis/<sportname>.js`. The equivalent CLI methods found in `src/clis/<sportname>.js` may have additional useful documentation.
 
 ## Adding new API routes
 
