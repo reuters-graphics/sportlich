@@ -131,6 +131,24 @@ Now that the sport class has been imported, we want to initialize it somewhere w
 | `optaSecretKey` [mandatory]  | The secret key for the Opta API. This should be stored as a hidden environment variable in the caller's codebase.                                                                          |
 | `locale` [optional]          | The locale (language/geographic region) the response should be in. Valid options can be found here: https://docs.performgroup.com/docs/data/reference/opta-sdapi-global-parameters.htm#lcl |
 
+For instance, initializing the `Soccer` class with proper shielding of secrets might look like the following:
+
+```javascript
+const soccer = new Soccer({
+  optaOutletAuth: process.env.OPTA_OUTLET_AUTH,
+  optaSecretKey: process.env.OPTA_SECRET_KEY,
+  locale: "en-us",
+});
+```
+
+Once the instance of the desired sports class has been initialized, we can call API methods with it, e.g.
+
+```javascript
+const matches = await soccer.matchTournamentCalendar(TOURNAMENT_ID);
+```
+
+The reference for the API methods available can be found in `src/apis/<sportsname>.js`. The equivalent CLI methods found in `src/clis/<sportsname>.js` may have additional useful documentation.
+
 ## Adding new API routes
 
 You need to modify code in 2 places:
@@ -166,3 +184,56 @@ Using our `match` route example from above, we would edit `src/cli/soccer.js` an
 ```
 
 The first element of this subarray is the actual command as recognized by the [`sade`](https://github.com/lukeed/sade) package we use to operate the CLI (notice it has a parameter `<fixtureUuid>` which will get passed to the API). The second element is a description of what the command does (I just copy this word-for-word from Opta's user guide about the particular command in the subtitle). The third element takes a soccer class instance as parameter and returns the function that will run the API code (with no arguments since this is an abstraction).
+
+## Adding a new sport
+
+There's four things to do generally to add support for a new sport to Sportlich.
+
+1. Create `src/apis/<sportname>.js` and generally structure it like
+
+```javascript
+import Sportlich from ".";
+
+export class <SportClass> extends Sportlich {
+  ... <methods>
+}
+```
+
+where `<methods>` call specific API routes (see “Adding New API Routes” above).
+
+2. Create `src/clis/<sportname>.js` and generally structure it like
+
+```javascript
+import { <SportClass> } from "../apis/<sportname>";
+import { commandAdapter } from "../adapter";
+
+export default commandAdapter("<sportname>", <SportClass>, [
+  ... <commands>
+]);
+```
+
+where `<commands>` link together API methods and the CLI (see “Adding New API Routes” above).
+
+3. In `src/clis/sports.js`, register the sport by adding it to the export array
+
+```javascript
+// Register all sports
+...
+import <sportname> from "./<sportname">;
+
+export default [..., <sportname>];
+```
+
+4. In `rollup.config.js`, add an element to the default export to generate the sport-specific output:
+
+```javascript
+export default [
+  ...,
+  {
+    input: "src/apis/<sportname>.js",
+    output: getOutput("./<sportname>.js"),
+    plugins,
+  },
+  ...
+];
+```
