@@ -209,7 +209,7 @@ export class Soccer extends Sportlich {
 
   async squads(tournamentCalendarUuid) {
     return await this.getUrl(
-      `/soccerdata/squads/<auth>/?tmcl=${tournamentCalendarUuid}`
+      `/soccerdata/squads/<auth>/?tmcl=${tournamentCalendarUuid}&_pgSz=1000`
     );
   }
 
