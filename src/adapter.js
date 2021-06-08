@@ -1,9 +1,9 @@
-import pkg from "../../package.json";
-import sade from "sade";
+import pkg from './../package.json';
+import sade from 'sade';
 
 // Adapter to help abstract sub-programs for each sport
 export function commandAdapter(commandName, sportClass, commands) {
-  const sportName = commandName.split(" ")[0];
+  const sportName = commandName.split(' ')[0];
   return [
     sportName,
     (optionWrapper) => {
