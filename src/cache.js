@@ -1,7 +1,7 @@
 import low from "lowdb";
 import FileSync from "lowdb/adapters/FileSync";
 
-class Cache {
+export class Cache {
   constructor() {
     // Set up database
     const adapter = new FileSync("cache.json");
@@ -30,5 +30,3 @@ class Cache {
       .write();
   }
 }
-
-export const cache = new Cache();

@@ -1,7 +1,7 @@
 import pkg from "../package.json";
 import sade from "sade";
 import sports from "./clis/sports";
-import { cache } from "./cache";
+import { Cache } from "./cache";
 require("dotenv").config();
 
 const prog = sade("sportlich", false);
@@ -56,6 +56,7 @@ prog
   .command("clean")
   .describe("Clear the API cache")
   .action(() => {
+    const cache = new Cache();
     cache.clearCache();
   });
 

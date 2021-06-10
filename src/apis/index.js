@@ -1,6 +1,6 @@
 import { get } from "../auth";
 import { skeleton } from "../util";
-import { cache } from "../cache";
+import { Cache } from "../cache";
 import jmespath from "jmespath";
 
 const MULTIPLE_BATCH = 20; // Opta limits multiple to 20-per-request
@@ -15,8 +15,10 @@ class Sportlich {
     this.nocache = opts.nocache;
     this.cmdline = opts.cmdline;
     this.locale = opts.locale;
+    this.dontCreateCache = opts.dontCreateCache;
     this.outletAuth = opts.optaOutletAuth || process.env.OUTLET_AUTH;
     this.secretKey = opts.optaSecretKey || process.env.SECRET_KEY;
+    this.storedCache = null;
 
     if (this.cache && this.nocache) {
       // Prevent conflicting options
@@ -46,6 +48,21 @@ class Sportlich {
     }
   }
 
+  getCache() {
+    if (this.dontCreateCache) {
+      return {
+        getUrl() {
+          return null;
+        },
+        setUrl() {},
+      };
+    }
+    if (this.storedCache == null) {
+      this.storedCache = new Cache();
+    }
+    return this.storedCache;
+  }
+
   async getUrl(
     path,
     handleResponse = true,
@@ -68,7 +85,7 @@ class Sportlich {
     let response = null;
     if (!this.nocache) {
       // Utilize cache
-      const cached = cache.getUrl(url);
+      const cached = this.getCache().getUrl(url);
       if (cached != null) {
         response = cached;
       }
@@ -80,7 +97,7 @@ class Sportlich {
 
     if (this.cache) {
       // Write to cache only if cache is set
-      cache.setUrl(url, response);
+      this.getCache().setUrl(url, response);
     }
 
     if (handleResponse) {
