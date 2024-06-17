@@ -1,4 +1,4 @@
-![](badge.svg)
+![](https://graphics.thomsonreuters.com/style-assets/images/logos/reuters-graphics-logo/svg/graphics-logo-color-dark.svg)
 
 # @reuters-graphics/sportlich
 
@@ -37,7 +37,7 @@ node dist/cli.js
 In general, the CLI works by running `sportlich <sportname> <command> [options]`. To get a list of available sports APIs, run:
 
 ```
-$ sportlich --help
+sportlich --help
 ```
 
 To get a list of all available commands within a particular sport, run
@@ -55,7 +55,7 @@ All CLI commands generally interface with the Opta API, which returns a JSON res
 | `-s, --skeleton` | Show only one value for each array in the response JSON. This is useful for quickly gleaming the overall structure without getting a jumble of thousands of rows.                                      |
 | `-r, --raw`      | Show the full prettified JSON value (as returned by JSON.stringify). Without this option, the JSON is printed using Node's default formatter, which can truncate data or apply undesired highlighting. |
 | `-f, --filter`   | Filter the JSON response using a JMESPath filter. Refer to [jmespath.org](https://jmespath.org/) for the language specification and examples.                                                          |
-| `-l, --locale`   | Use the specified locale. See https://docs.performgroup.com/docs/data/reference/opta-sdapi-global-parameters.htm#lcl for options.                                                                      |
+| `-l, --locale`   | Use the specified locale. See <https://docs.performgroup.com/docs/data/reference/opta-sdapi-global-parameters.htm#lcl> for options.                                                                    |
 | `-c, --cache`    | Cache API calls in a static file. Future calls to the same exact endpoints/params will use the cached result without relying on the network/API (unless the `--nocache` parameter is set; see below).  |
 | `-n, --nocache`  | Do not utilize the API cache. (In general, the cache can be cleared by running `sportlich clean`.)                                                                                                     |
 
@@ -120,16 +120,16 @@ WORLDCUP2022=2a8elwzsufmguwymxbshcx756
 All Sportlich methods work in module form as well. To start, import `<SportClass>` from `@reuters-graphics/sportlich/dist/<sportname>`. For instance, to import the soccer methods, the following code will import the `Soccer` class.
 
 ```javascript
-import { Soccer } from "@reuters-graphics/sportlich/dist/soccer";
+import { Soccer } from '@reuters-graphics/sportlich/dist/soccer';
 ```
 
 Now that the sport class has been imported, we want to initialize it somewhere with some options. The general form is `const <sportInstance> = <SportClass>(<options>)`, where relevant options are as follows:
 
-| Option                       | Description                                                                                                                                                                                |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `optaOutletAuth` [mandatory] | The outlet auth for the Opta API. This should be stored as a hidden environment variable in the caller's codebase.                                                                         |
-| `optaSecretKey` [mandatory]  | The secret key for the Opta API. This should be stored as a hidden environment variable in the caller's codebase.                                                                          |
-| `locale` [optional]          | The locale (language/geographic region) the response should be in. Valid options can be found here: https://docs.performgroup.com/docs/data/reference/opta-sdapi-global-parameters.htm#lcl |
+| Option                       | Description                                                                                                                                                                                  |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `optaOutletAuth` [mandatory] | The outlet auth for the Opta API. This should be stored as a hidden environment variable in the caller's codebase.                                                                           |
+| `optaSecretKey` [mandatory]  | The secret key for the Opta API. This should be stored as a hidden environment variable in the caller's codebase.                                                                            |
+| `locale` [optional]          | The locale (language/geographic region) the response should be in. Valid options can be found here: <https://docs.performgroup.com/docs/data/reference/opta-sdapi-global-parameters.htm#lcl> |
 
 For instance, initializing the `Soccer` class with proper shielding of secrets might look like the following:
 
@@ -137,7 +137,7 @@ For instance, initializing the `Soccer` class with proper shielding of secrets m
 const soccer = new Soccer({
   optaOutletAuth: process.env.OPTA_OUTLET_AUTH,
   optaSecretKey: process.env.OPTA_SECRET_KEY,
-  locale: "en-us",
+  locale: 'en-us',
 });
 ```
 

@@ -1,39 +1,25 @@
-import externals from "rollup-plugin-node-externals";
-import json from "@rollup/plugin-json";
-import resolve from "@rollup/plugin-node-resolve";
-import { sizeSnapshot } from "rollup-plugin-size-snapshot";
+import externals from 'rollup-plugin-node-externals';
+import json from '@rollup/plugin-json';
+import typescript from '@rollup/plugin-typescript';
 
 const plugins = [
-  resolve({ preferBuiltins: true, modulesOnly: true }),
   json(),
   externals({ deps: true }),
-  sizeSnapshot(),
+  typescript({
+    tsconfig: './tsconfig.build.json',
+  }),
 ];
 
-const getOutput = (path) => ({
-  dir: "dist",
-  format: "cjs",
-  paths: { "@reuters-graphics/sportlich": path },
-});
+const output = {
+  dir: 'dist',
+  format: 'es',
+  sourcemap: true,
+};
 
 export default [
   {
-    input: "src/apis/soccer.js",
-    output: getOutput("./soccer.js"),
+    input: 'src/index.ts',
+    output,
     plugins,
-  },
-  {
-    input: "src/apis/baseball.js",
-    output: getOutput("./baseball.js"),
-    plugins,
-  },
-  {
-    input: "src/cli.js",
-    output: {
-      ...getOutput("./index.js"),
-      ...{ banner: "#!/usr/bin/env node" },
-    },
-    plugins,
-    external: ["@reuters-graphics/sportlich"],
   },
 ];

@@ -1,43 +1,84 @@
 {
   "name": "@reuters-graphics/sportlich",
   "version": "0.0.10",
-  "main": "dist/index.js",
-  "bin": {
-    "sportlich": "dist/cli.js"
+  "type": "module",
+  "main": "./dist/index.js",
+  "exports": {
+    "types": "./dist/src/index.d.ts",
+    "default": "./dist/index.js"
   },
+  "types": "./dist/src/index.d.ts",
   "repository": "https://github.com/reuters-graphics/sportlich",
   "author": "Dylan Freedman <freedmand@gmail.com>",
+  "contributors": [
+    "Dylan Freedman <freedmand@gmail.com>",
+    "Jon McClure <jon.r.mcclure@gmail.com>"
+  ],
   "license": "MIT",
   "private": false,
   "keywords": [],
   "files": [
-    "dist/**/*",
-    "badge.svg"
+    "dist/**/*"
   ],
+  "c8": {
+    "reporter": [
+      "text",
+      "lcov"
+    ]
+  },
   "scripts": {
-    "prepublishOnly": "yarn test",
-    "build": "rollup --config rollup.config.js",
-    "watch": "rollup --config rollup.config.js -w",
-    "test": "yarn build && mocha"
+    "prepublishOnly": "npm run build:package",
+    "build:package": "rimraf ./dist && rollup --config rollup.config.js && publint",
+    "build:docs": "typedoc",
+    "docs:preview": "live-server ./docs",
+    "DONOTUSE:openapi:soccer": "openapi-typescript ./types/soccer/swagger-sdapi-soccer.json -o ./types/soccer/api.ts",
+    "test": "c8 mocha test/*.ts",
+    "lint": "prettier --check . && eslint . && publint",
+    "format": "prettier --write .",
+    "changeset:version": "changeset version",
+    "changeset:publish": "git add --all && changeset publish"
   },
   "devDependencies": {
-    "@reuters-graphics/eslint-config": "^0.0.2",
-    "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^8.0.1",
-    "dotenv": "^8.2.0",
-    "eslint": "^6.8.0",
+    "@changesets/cli": "^2.27.5",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@tsconfig/recommended": "^1.0.3",
+    "@types/expect.js": "^0.3.32",
+    "@types/lowdb": "^1.0.15",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.14.2",
+    "@types/qs": "^6.9.15",
+    "@types/update-notifier": "^6.0.8",
+    "@types/validator": "^13.11.8",
+    "@typescript-eslint/eslint-plugin": "^6.18.1",
+    "@typescript-eslint/parser": "^6.18.1",
+    "c8": "^10.1.2",
+    "dotenv": "^16.3.1",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.1.1",
     "expect.js": "^0.3.1",
-    "mocha": "^7.1.2",
-    "rollup": "^2.10.5",
-    "rollup-plugin-node-externals": "^2.2.0",
-    "rollup-plugin-size-snapshot": "^0.12.0"
+    "lefthook": "^1.5.6",
+    "live-server": "1.2.1",
+    "mocha": "^10.4.0",
+    "openapi-typescript": "^6.7.6",
+    "publint": "^0.2.8",
+    "rimraf": "^5.0.7",
+    "rollup": "^4.18.0",
+    "rollup-plugin-node-externals": "^7.1.2",
+    "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.8",
+    "tslib": "^2.6.2",
+    "tsx": "^4.15.6",
+    "typedoc": "^0.25.7",
+    "typescript": "^5.3.3"
   },
   "dependencies": {
-    "axios": "^0.21.1",
-    "crypto": "^1.0.1",
-    "jmespath": "^0.15.0",
+    "axios": "^1.7.2",
     "lowdb": "^1.0.0",
-    "qs": "^6.10.1",
-    "sade": "^1.7.4"
+    "qs": "^6.12.1",
+    "sade": "^1.8.1"
   }
 }
