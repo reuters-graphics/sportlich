@@ -1,5 +1,11 @@
 # @reuters-graphics/sportlich
 
+## 1.0.1
+
+### Patch Changes
+
+- edc3000: Quick fix for lowdb
+
 ## 1.0.0
 
 ### Major Changes
