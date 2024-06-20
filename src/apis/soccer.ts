@@ -51,6 +51,19 @@ export class Soccer extends Sportlich {
   }
 
   /**
+   * See [OPTA docs](https://docs.performgroup.com/docs/rh/sdapi/Topics/soccer/opta-sdapi-soccer-api-tournament-calendars.htm).
+   */
+  async tournamentCalendarByType(
+    calendarType: 'active' | 'authorized' | 'active/authorized',
+    options?: RequestOptions
+  ) {
+    return (await this.getUrl(
+      `/soccerdata/tournamentcalendar/<auth>/${calendarType}/?stages=yes`,
+      options
+    )) as SoccerAPI.TournamentCalendar.Data;
+  }
+
+  /**
    * See [OPTA docs](https://docs.performgroup.com/docs/rh/sdapi/Topics/soccer/opta-sdapi-soccer-api-tournament-schedule.htm).
    */
   async tournamentSchedule(

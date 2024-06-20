@@ -16,6 +16,11 @@ describe('test Sportlich', function () {
     expect(calendar?.competition?.[0]?.id).to.not.be(undefined);
   });
 
+  it('Should get tournament calendar by type', async function () {
+    const calendar = await soccer.tournamentCalendarByType('active/authorized');
+    expect(calendar?.competition?.[0]?.id).to.not.be(undefined);
+  });
+
   it('Should get tournament schedule', async function () {
     const schedule = await soccer.tournamentSchedule(TOURNAMENT_ID);
     expect(schedule?.matchDate?.[0]?.match?.[0]?.id).to.not.be(undefined);
