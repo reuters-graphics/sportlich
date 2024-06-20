@@ -1,6 +1,6 @@
 import low, { LowdbSync } from 'lowdb';
 
-import FileSync from 'lowdb/adapters/FileSync';
+import FileSync from 'lowdb/adapters/FileSync.js';
 
 interface CacheSchema {
   cache: Record<string, { json: unknown; lastUpdated: string }>;
