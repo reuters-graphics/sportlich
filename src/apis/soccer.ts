@@ -312,9 +312,7 @@ export class Soccer extends Sportlich {
     return (await this.getUrl(
       `/soccerdata/rankings/<auth>/${tournamentCalendarUuid}/`,
       options
-    )) as GetJson<
-      API.soccer.paths['/rankings/{outletAuthKey}/{tournamentCalendarUuid}']
-    >;
+    )) as SoccerAPI.Rankings.Data;
   }
 
   async topPerformers(

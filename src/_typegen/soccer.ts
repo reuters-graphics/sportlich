@@ -114,6 +114,11 @@ const genTypes = async () => {
   );
   await generateTypes(standings, 'standings', 'soccer');
 
+  const rankings = await Promise.all(
+    ALL_TOURNAMENT_CALENDAR_IDS.map((id) => soccer.rankings(id, { maxAge }))
+  );
+  await generateTypes(rankings, 'rankings', 'soccer');
+
   const topPerformers = await Promise.all(
     ALL_TOURNAMENT_CALENDAR_IDS.map((id) =>
       soccer.topPerformers(id, { maxAge })

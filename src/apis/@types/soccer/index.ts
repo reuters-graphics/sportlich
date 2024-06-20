@@ -6,6 +6,7 @@ export * as TopPerformers from './topPerformers';
 export * as Team from './team';
 export * as Standings from './standings';
 export * as Squads from './squads';
+export * as Rankings from './rankings';
 export * as PlayerCareer from './playerCareer';
 export * as MatchTournamentCalendar from './matchTournamentCalendar';
 export * as MatchStatsDetailed from './matchStatsDetailed';
