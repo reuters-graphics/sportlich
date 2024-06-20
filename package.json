@@ -1,6 +1,6 @@
 {
   "name": "@reuters-graphics/sportlich",
-  "version": "0.0.10",
+  "version": "1.0.0",
   "type": "module",
   "main": "./dist/index.js",
   "exports": {
