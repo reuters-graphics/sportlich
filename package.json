@@ -16,6 +16,9 @@
   ],
   "license": "MIT",
   "private": false,
+  "engines": {
+    "node": ">=18"
+  },
   "keywords": [],
   "files": [
     "dist/**/*"
@@ -31,7 +34,8 @@
     "build:package": "rimraf ./dist && rollup --config rollup.config.js && publint",
     "build:docs": "typedoc",
     "docs:preview": "live-server ./docs",
-    "DONOTUSE:openapi:soccer": "openapi-typescript ./types/soccer/swagger-sdapi-soccer.json -o ./types/soccer/api.ts",
+    "gen:types": "tsx ./src/_typegen/soccer.ts",
+    "DONOTUSE:openapi:soccer": "openapi-typescript ./src/apis/@types/swagger/soccer/swagger-sdapi-soccer.json -o ./src/apis/@types/swagger/soccer/api.ts",
     "test": "c8 mocha test/*.ts",
     "lint": "prettier --check . && eslint . && publint",
     "format": "prettier --write .",
@@ -44,6 +48,8 @@
     "@rollup/plugin-typescript": "^11.1.6",
     "@tsconfig/recommended": "^1.0.3",
     "@types/expect.js": "^0.3.32",
+    "@types/glob": "^8.1.0",
+    "@types/lodash": "^4.17.5",
     "@types/lowdb": "^1.0.15",
     "@types/mocha": "^10.0.6",
     "@types/node": "^20.14.2",
@@ -60,11 +66,13 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.1.1",
     "expect.js": "^0.3.1",
+    "glob": "^10.4.2",
     "lefthook": "^1.5.6",
     "live-server": "1.2.1",
     "mocha": "^10.4.0",
     "openapi-typescript": "^6.7.6",
     "publint": "^0.2.8",
+    "quicktype-core": "^23.0.170",
     "rimraf": "^5.0.7",
     "rollup": "^4.18.0",
     "rollup-plugin-node-externals": "^7.1.2",
@@ -77,8 +85,8 @@
   },
   "dependencies": {
     "axios": "^1.7.2",
+    "lodash": "^4.17.21",
     "lowdb": "^1.0.0",
-    "qs": "^6.12.1",
-    "sade": "^1.8.1"
+    "qs": "^6.12.1"
   }
 }

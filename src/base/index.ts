@@ -77,6 +77,10 @@ class Sportlich {
     return this.storedCache;
   }
 
+  clearCache() {
+    if (this.storedCache) this.storedCache.clearCache();
+  }
+
   protected async getUrl(
     path: string,
     options: {

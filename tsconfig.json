@@ -1,5 +1,5 @@
 {
-  "include": ["src/**/*.ts", "test/**/*.ts", "types/**/*.ts"],
+  "include": ["src/**/*.ts", "test/**/*.ts"],
   "exclude": ["node_modules"],
   "compilerOptions": {
     "rootDir": ".",
@@ -19,8 +19,7 @@
     "forceConsistentCasingInFileNames": true,
     "typeRoots": [
       "./node_modules/@types",
-      "./dist/index.d.ts",
-      "./types/api.d.ts"
+      "./src/apis/@types/swagger/api.d.ts"
     ],
     "paths": {
       "@reuters-graphics/sportlich": ["./index.ts"]

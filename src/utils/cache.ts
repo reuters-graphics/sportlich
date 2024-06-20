@@ -14,7 +14,7 @@ interface CacheSchema {
  *
  * @example
  * ```typescript
- * import type { CustomCache } from '@reuters-graphics/sportlich';
+ * import { Soccer, type CustomCache } from '@reuters-graphics/sportlich';
  *
  * class MyCustomCache implements CustomCache {
  *   private cache: Record<string, { json: unknown, lastUpdated: string }> = {};
@@ -24,7 +24,9 @@ interface CacheSchema {
  *   }
  *
  *   getUrl(url: string, maxAge: number) {
- *     const { json, lastUpdated } = this.cache[url];
+ *     const cachedData = this.cache[url];
+ *     if (!cachedData) return null;
+ *     const { json, lastUpdated } = cachedData;
  *     const secondsSinceUpdate = (Date.now() - new Date(lastUpdated).getTime()) / 1000;
  *     if (secondsSinceUpdate <= maxAge ) return json;
  *     return null;
@@ -37,6 +39,9 @@ interface CacheSchema {
  *     };
  *   }
  * }
+ *
+ * // Pass your custom cache to new sportlich instance
+ * const soccer = new Soccer({ cache: new MyCustomCache() });
  * ```
  */
 export interface CustomCache {
@@ -85,8 +90,10 @@ export class Cache implements CustomCache {
    * @param url Request [URL.href](https://developer.mozilla.org/en-US/docs/Web/API/URL/href)
    * @param maxAge Max age in seconds to cache this request data for
    */
-  getUrl(url: string, maxAge: number) {
-    const { json, lastUpdated } = this.db.get('cache').value()[url];
+  getUrl(url: string, maxAge: number): unknown | null {
+    const cachedData = this.db.get('cache').value()[url];
+    if (!cachedData) return null;
+    const { json, lastUpdated } = cachedData;
     const lastUpdatedDate = new Date(lastUpdated);
     const secondsSinceUpdate = (Date.now() - lastUpdatedDate.getTime()) / 1000;
     if (secondsSinceUpdate <= maxAge) return json;

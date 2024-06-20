@@ -1,4 +1,4 @@
-import * as Soccer from './soccer/api.ts';
+import * as Soccer from './soccer/api.js';
 
 declare global {
   namespace API {
