@@ -3,7 +3,7 @@
  *
  * Data types provided by OPTA's [Swagger schema](https://documentation.statsperform.com/docs/sdapi-swagger/sdapi-swagger-soccer/index.html) are [known to be incorrect](https://github.com/reuters-graphics/sportlich/issues/3).
  * These types are created using [quicktype](https://quicktype.io/) and data samples pulled
- * directly from SDAPI endpoints.
+ * directly from SDAPI endpoints (for those endpoints Reuters subscribed to).
  *
  * You can re-create the types by running:
  *
