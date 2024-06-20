@@ -8,6 +8,8 @@ on:
     branches:
       - main
 
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
 permissions:
   checks: write
   contents: write
